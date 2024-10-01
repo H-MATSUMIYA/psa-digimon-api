@@ -15,6 +15,7 @@ app.get("/", async (req: Request, res: Response) => {
         Accept: "*/*",
         "Accept-Encoding": "gzip, deflate, br",
         Connection: "keep-alive",
+        "User-Agent": "PsaDigimon/1.0 (https://psa-digimon.vercel.app/)",
       },
     });
 
