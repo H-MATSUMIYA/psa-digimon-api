@@ -6,20 +6,28 @@ app.use(express.json()); // JSONリクエストを扱うため
 // シンプルなGETリクエスト
 app.get("/", async (req: Request, res: Response) => {
   // res.json({ message: "Hello, TypeScript!" });
+  try {
+    const response = await fetch(`https://www.psacard.com/cert/88796953`, {
+      method: "GET",
+      headers: {
+        "Cache-Control": "no-cache",
+        Host: "www.psacard.com",
+        Accept: "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
+        Connection: "keep-alive",
+      },
+    });
 
-  const response = await fetch(`https://www.psacard.com/cert/88796953`, {
-    method: "GET",
-    headers: {
-      "Cache-Control": "no-cache",
-      Host: "www.psacard.com",
-      Accept: "*/*",
-      "Accept-Encoding": "gzip, deflate, br",
-      Connection: "keep-alive",
-    },
-  });
-  const html = await response.text();
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
-  res.json({ message: "Hello, TypeScript!", html });
+    const html = await response.text();
+    res.json({ message: "Hello, TypeScript!", html });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 // パラメータ付きGETリクエスト
