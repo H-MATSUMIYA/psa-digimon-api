@@ -4,8 +4,22 @@ const app = express();
 app.use(express.json()); // JSONリクエストを扱うため
 
 // シンプルなGETリクエスト
-app.get("/", (req: Request, res: Response) => {
-  res.json({ message: "Hello, TypeScript!" });
+app.get("/", async (req: Request, res: Response) => {
+  // res.json({ message: "Hello, TypeScript!" });
+
+  const response = await fetch(`https://www.psacard.com/cert/88796953`, {
+    method: "GET",
+    headers: {
+      "Cache-Control": "no-cache",
+      Host: "www.psacard.com",
+      Accept: "*/*",
+      "Accept-Encoding": "gzip, deflate, br",
+      Connection: "keep-alive",
+    },
+  });
+  const html = await response.text();
+
+  res.json({ message: "Hello, TypeScript!", html });
 });
 
 // パラメータ付きGETリクエスト
