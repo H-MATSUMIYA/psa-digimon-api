@@ -5,13 +5,12 @@ app.use(express.json()); // JSONリクエストを扱うため
 
 // シンプルなGETリクエスト
 app.get("/", async (req: Request, res: Response) => {
-  // res.json({ message: "Hello, TypeScript!" });
   try {
     const response = await fetch(`https://www.psacard.com/cert/88796953`, {
       method: "GET",
       headers: {
         "Cache-Control": "no-cache",
-        Host: "www.psacard.com",
+        // Host: "www.psacard.com",
         Accept: "*/*",
         "Accept-Encoding": "gzip, deflate, br",
         Connection: "keep-alive",
