@@ -12,19 +12,28 @@ const app = express();
 app.use(express.json()); // JSONリクエストを扱うため
 // シンプルなGETリクエスト
 app.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // res.json({ message: "Hello, TypeScript!" });
-    const response = yield fetch(`https://www.psacard.com/cert/88796953`, {
-        method: "GET",
-        headers: {
-            "Cache-Control": "no-cache",
-            Host: "www.psacard.com",
-            Accept: "*/*",
-            "Accept-Encoding": "gzip, deflate, br",
-            Connection: "keep-alive",
-        },
-    });
-    const html = yield response.text();
-    res.json({ message: "Hello, TypeScript!", html });
+    try {
+        const response = yield fetch(`https://www.psacard.com/cert/88796953`, {
+            method: "GET",
+            headers: {
+                "Cache-Control": "no-cache",
+                // Host: "www.psacard.com",
+                Accept: "*/*",
+                "Accept-Encoding": "gzip, deflate, br",
+                Connection: "keep-alive",
+                "User-Agent": "PsaDigimon/1.0 (https://psa-digimon.vercel.app/)",
+            },
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const html = yield response.text();
+        res.json({ message: "Hello, TypeScript!", html });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
 }));
 // パラメータ付きGETリクエスト
 app.get("/api/items/:id", (req, res) => {
